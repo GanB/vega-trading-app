@@ -61,3 +61,12 @@ fieldset {
   position: relative;
   bottom: -2rem;
 }
+.link--register {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.link--guest--user {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}

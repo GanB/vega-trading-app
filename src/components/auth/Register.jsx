@@ -21,7 +21,7 @@ export const Register = (props) => {
       .then((createdUser) => {
         if (createdUser.hasOwnProperty("id")) {
           localStorage.setItem(
-            "capstone_user",
+            "app_user",
             JSON.stringify({
               id: createdUser.id,
             })
