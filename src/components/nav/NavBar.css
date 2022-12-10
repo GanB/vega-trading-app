@@ -1,14 +1,37 @@
 .navbar {
   display: flex;
   flex-wrap: nowrap;
-  justify-content: left;
+  justify-content: flex-end;
+  align-items: center;
+  align-content: center;
+  background-color: #06101f;
+  color: #ffff;
+  width: 100vw;
+  height: 10vh;
+  margin: 0%;
 }
 
 .navbar__item {
   flex-basis: 20%;
   list-style-type: none;
+  color: #ffff;
 }
 
 .navbar__logout {
   margin-left: auto;
+}
+
+.navbar__link {
+  color: #ffff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: larger;
+  cursor: pointer;
+}
+
+a:hover {
+  cursor: pointer;
+}
+.link {
+  cursor: pointer;
 }
