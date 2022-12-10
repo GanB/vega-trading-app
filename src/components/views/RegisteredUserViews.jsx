@@ -1,4 +1,5 @@
 import { Outlet, Route, Routes } from "react-router-dom";
+import { Logout } from "../auth/Logout";
 import { RegisteredUserHome } from "../home/RegisteredUserHome";
 import { Profile } from "../profiles/Profile";
 import { Trade } from "../trades/Trade";
@@ -17,10 +18,11 @@ export const RegisteredUserViews = () => {
           </>
         }
       >
-        <Route path="account-home" element={<RegisteredUserHome />} />
+        <Route path="home" element={<RegisteredUserHome />} />
         <Route path="trade" element={<Trade />} />
         <Route path="watchlist" element={<Watchlist />} />
         <Route path="profile" element={<Profile />} />
+        {/* <Route path="logout" element={<Logout />} /> */}
       </Route>
     </Routes>
   );

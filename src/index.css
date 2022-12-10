@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Comfortaa|Patua+One");
+
 /*Typography
 --------------------------------------------------------------*/
 body
@@ -8,13 +9,17 @@ select,
 text,
 date,
 textarea  */ {
-  color: #0b2237;
+  /* color: #0b2237; */
   font-family: "Comfortaa", Arial, sans-serif;
   font-size: 14px;
   line-height: 1.5;
-  background-color: #f1faee;
+  /* background-color: #f1faee; */
   /* outline: 0.05rem solid #21295c; */
   /* margin: 5px;
   padding: 5px; */
   /* border-radius: 20px; */
+}
+
+a:hover {
+  cursor: pointer;
 }

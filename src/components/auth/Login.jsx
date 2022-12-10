@@ -26,7 +26,7 @@ export const Login = () => {
             })
           );
 
-          navigate("/");
+          navigate("/home");
         } else {
           window.alert("Invalid login");
         }
@@ -39,7 +39,7 @@ export const Login = () => {
       "app_user",
       JSON.stringify({ isRegisteredUser: false })
     );
-    navigate(`/`);
+    navigate(`/home`);
   };
 
   return (
