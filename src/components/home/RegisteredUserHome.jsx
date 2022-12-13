@@ -11,7 +11,8 @@ export const RegisteredUserHome = () => {
   const previousDay = new Date(
     new Date().valueOf() - 1000 * 60 * 60 * 24
   ).toLocaleDateString("en-CA");
-  const STOCK_SYMBOL_API = `${api.STOCK_SYMBOLS}${previousDay}?adjusted=true&apiKey=${process.env.REACT_APP_PG_API_KEY}`;
+  const STOCK_SYMBOL_API = `${api.STOCK_SYMBOLS}
+  ${previousDay}?adjusted=true&apiKey=${process.env.REACT_APP_PG_API_KEY}`;
 
   useEffect(() => {
     const fetchStocksList = async () => {

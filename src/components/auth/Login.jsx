@@ -18,11 +18,12 @@ export const Login = () => {
       .then((foundUsers) => {
         if (foundUsers.length === 1) {
           const user = foundUsers[0];
-          localStorage.setItem(
+          sessionStorage.setItem(
             "app_user",
             JSON.stringify({
               id: user.id,
               isRegisteredUser: true,
+              fullName: user.fullName,
             })
           );
 
@@ -34,10 +35,10 @@ export const Login = () => {
   };
 
   const guestUserHandler = () => {
-    localStorage.clear();
-    localStorage.setItem(
+    sessionStorage.clear();
+    sessionStorage.setItem(
       "app_user",
-      JSON.stringify({ isRegisteredUser: false })
+      JSON.stringify({ isRegisteredUser: false, fullName: "" })
     );
     navigate(`/home`);
   };
