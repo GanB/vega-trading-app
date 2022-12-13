@@ -5,7 +5,7 @@ import "./NavBar.css";
 
 export const NavBar = () => {
   const navigate = useNavigate();
-  const appUser = JSON.parse(localStorage.getItem("app_user"));
+  const appUser = JSON.parse(sessionStorage.getItem("app_user"));
 
   if (appUser.isRegisteredUser) {
     return <RegisteredUserNav />;

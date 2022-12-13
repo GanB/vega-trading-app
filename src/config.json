@@ -1,3 +1,5 @@
 {
-  "STOCK_SYMBOLS": "https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/"
+  "STOCK_SYMBOLS": "https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/",
+  "TICKER_SEARCH": "https://api.polygon.io/v3/reference/tickers/",
+  "STOCK_FINANCIALS": "https://api.polygon.io/vX/reference/financials"
 }
