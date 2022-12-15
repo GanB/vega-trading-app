@@ -80,7 +80,7 @@ export const SearchBar = () => {
           placeholder="Search…"
           inputProps={{ "aria-label": "search" }}
           onChange={(event) => {
-            setSearchTerm(event.target.value);
+            setSearchTerm(event.target.value.toUpperCase());
           }}
           onClick={() => {
             console.log(`search clicked`);
