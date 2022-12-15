@@ -1,5 +1,7 @@
 {
   "STOCK_SYMBOLS": "https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/",
   "TICKER_SEARCH": "https://api.polygon.io/v3/reference/tickers/",
-  "STOCK_FINANCIALS": "https://api.polygon.io/vX/reference/financials"
+  "STOCK_FINANCIALS": "https://api.polygon.io/vX/reference/financials",
+  "DAILY_OPEN_CLOSE": "https://api.polygon.io/v1/open-close/",
+  "JS_TRADE_ORDER": "http://localhost:8088/tradeOrder/"
 }

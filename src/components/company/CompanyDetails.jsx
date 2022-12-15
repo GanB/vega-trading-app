@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { CompanyProfile } from "./CompanyProfile";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
@@ -49,6 +49,11 @@ function a11yProps(index) {
 export const CompanyDetails = ({ searchResult }) => {
   const navigate = useNavigate();
   const [value, setValue] = React.useState(0);
+  const [ticker, setTicker] = useState("");
+
+  useEffect(() => {
+    setTicker(`${searchResult?.results?.ticker}`);
+  }, [searchResult]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -71,7 +76,14 @@ export const CompanyDetails = ({ searchResult }) => {
             </Button>
           </Tooltip>
 
-          <Button variant="contained">Trade</Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              navigate(`/trade`, { state: { ticker } });
+            }}
+          >
+            Trade
+          </Button>
         </Stack>
       </Box>
       <Box sx={{ width: "100%" }}>
