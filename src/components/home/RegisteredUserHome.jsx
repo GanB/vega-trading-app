@@ -8,29 +8,72 @@ import Typography from "@mui/material/Typography";
 
 export const RegisteredUserHome = () => {
   const [stocksList, setStocksList] = useState([]);
-  const previousDay = new Date(
-    new Date().valueOf() - 1000 * 60 * 60 * 24
-  ).toLocaleDateString("en-CA");
-  const STOCK_SYMBOL_API = `${api.STOCK_SYMBOLS}
-  ${previousDay}?adjusted=true&apiKey=${process.env.REACT_APP_PG_API_KEY}`;
+  const [dataGridFormattted, setDataGridFormattted] = useState([]);
+
+  const previousDay = () => {
+    const previousDate = new Date(new Date().valueOf() - 1000 * 60 * 60 * 24);
+    console.log(previousDate.getDay());
+    const previousDay = previousDate.getDay();
+
+    if (previousDay === 0 || previousDay === 6) {
+      return new Date(
+        previousDate.valueOf() - 1000 * 60 * 60 * 24 * 2
+      ).toLocaleDateString("en-CA");
+    }
+    return previousDate.toLocaleDateString("en-CA");
+  };
+
+  const currencyFormatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
+  console.log(previousDay());
+  const STOCK_SYMBOL_API = `${
+    api.STOCK_SYMBOLS
+  }${previousDay()}?adjusted=true&apiKey=${process.env.REACT_APP_PG_API_KEY}`;
 
   useEffect(() => {
     const fetchStocksList = async () => {
-      // console.log(STOCK_SYMBOL_API);
-      // console.log(previousDay);
-      // console.log(process.env.REACT_APP_PG_API_KEY);
-      // const options = {
-      //   method: "GET",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      // };
-      const response = await fetch(STOCK_SYMBOL_API);
+      const options = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await fetch(STOCK_SYMBOL_API, options);
       const stocksList = await response.json();
+      console.log(stocksList.results);
       setStocksList(stocksList.results);
     };
     fetchStocksList();
   }, []);
+
+  useEffect(() => {
+    const dataGridRows = stocksList.map((stock) => {
+      return {
+        id: stock.T,
+        closePrice: currencyFormatter.format(isNaN(stock.c) ? 0.0 : stock.c),
+        openPrice: currencyFormatter.format(isNaN(stock.o) ? 0.0 : stock.o),
+        high: stock.h,
+        low: stock.l,
+        n: stock.n,
+        volume: stock.v,
+        vw: stock.vw,
+        term: stock.duration,
+        price:
+          stock.priceType === "Market"
+            ? "Mkt"
+            : currencyFormatter.format(
+                isNaN(stock.limitPrice) ? 0.0 : stock.limitPrice
+              ),
+        status: stock.status,
+      };
+    });
+
+    console.log(dataGridRows);
+    setDataGridFormattted(dataGridRows);
+  }, [stocksList]);
 
   return (
     <Box sx={{ height: 400, width: "100%" }}>

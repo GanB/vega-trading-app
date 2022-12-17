@@ -51,6 +51,7 @@ export const CompanyDetails = ({ searchResult }) => {
   const navigate = useNavigate();
   const [value, setValue] = React.useState(0);
   const [ticker, setTicker] = useState("");
+  const [dailyQuote, setDailyQuote] = useState({});
   const [isTickerInWatchlist, setIsTickerInWatchlist] = useState(false);
   const appuserObj = JSON.parse(sessionStorage.getItem("app_user"));
 
@@ -62,6 +63,13 @@ export const CompanyDetails = ({ searchResult }) => {
 
     portfolioWatchlistObj.customerId = appuserObj.id;
     portfolioWatchlistObj.ticker = ticker;
+    portfolioWatchlistObj.open = dailyQuote?.open;
+    portfolioWatchlistObj.close = dailyQuote?.close;
+    portfolioWatchlistObj.high = dailyQuote?.high;
+    portfolioWatchlistObj.low = dailyQuote?.low;
+    portfolioWatchlistObj.volume = dailyQuote?.volume;
+    portfolioWatchlistObj.afterHours = dailyQuote?.afterHours;
+    portfolioWatchlistObj.preMarket = dailyQuote?.preMarket;
 
     console.log(portfolioWatchlistObj);
 
@@ -110,6 +118,42 @@ export const CompanyDetails = ({ searchResult }) => {
       }
     };
     if (ticker) getWatchList();
+  }, [ticker]);
+
+  const previousDay = () => {
+    const previousDate = new Date(new Date().valueOf() - 1000 * 60 * 60 * 24);
+    console.log(previousDate.getDay());
+    const previousDay = previousDate.getDay();
+
+    if (previousDay === 0 || previousDay === 6) {
+      return new Date(
+        previousDate.valueOf() - 1000 * 60 * 60 * 24 * 2
+      ).toLocaleDateString("en-CA");
+    }
+    return previousDate.toLocaleDateString("en-CA");
+  };
+
+  const DAILY_OPEN_CLOSE_API = `${
+    api.DAILY_OPEN_CLOSE
+  }${ticker?.toUpperCase()}/${previousDay()}?adjusted=true&apiKey=${
+    process.env.REACT_APP_PG_API_KEY
+  }`;
+
+  useEffect(() => {
+    if (ticker) {
+      const fetchData = async () => {
+        console.log(DAILY_OPEN_CLOSE_API);
+        const response = await fetch(DAILY_OPEN_CLOSE_API);
+        if (!response.ok) {
+          console.log(response.status, response.statusText);
+        } else {
+          const tickerResultFromApi = await response.json();
+          console.log("tickerResultFromApi", tickerResultFromApi);
+          setDailyQuote(tickerResultFromApi);
+        }
+      };
+      fetchData();
+    }
   }, [ticker]);
 
   const handleChange = (event, newValue) => {
