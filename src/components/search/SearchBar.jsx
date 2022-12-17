@@ -79,6 +79,7 @@ export const SearchBar = () => {
         <StyledInputBase
           placeholder="Search…"
           inputProps={{ "aria-label": "search" }}
+          value={searchTerm}
           onChange={(event) => {
             setSearchTerm(event.target.value.toUpperCase());
           }}
