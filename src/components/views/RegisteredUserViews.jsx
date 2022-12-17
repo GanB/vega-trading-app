@@ -6,6 +6,7 @@ import { Trade } from "../trades/StockQuote";
 import { Watchlist } from "../watchlists/Watchlist";
 import AppBar from "@mui/material/AppBar";
 import { TradeContainer } from "../trades/TradeContainer";
+import { EditTrade } from "../trades/EditTrade";
 
 export const RegisteredUserViews = (props) => {
   const appUser = JSON.parse(sessionStorage.getItem("app_user"));
@@ -27,6 +28,7 @@ export const RegisteredUserViews = (props) => {
       >
         <Route path="home" element={<RegisteredUserHome />} />
         <Route path="trade" element={<TradeContainer />} />
+        <Route path="trade/edit/:tradeId" element={<EditTrade />} />
         <Route path="watchlist" element={<Watchlist />} />
         <Route path="profile" element={<Profile />} />
         <Route path="search-result" element={<SearchResults />} />

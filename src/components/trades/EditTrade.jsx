@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
@@ -78,9 +78,11 @@ const durations = [
   },
 ];
 
-export const TradeForm = ({ ticker }) => {
+export const EditTrade = ({ ticker }) => {
   const navigate = useNavigate();
+  const { tradeId } = useParams();
   const [tradeOrder, setTradeOrder] = useState({});
+  const [tradeOrderDetails, setTradeOrderDetails] = useState({});
 
   const [tickerForQuote, setTickerForQuote] = useState("");
 
@@ -95,7 +97,7 @@ export const TradeForm = ({ ticker }) => {
   const [enteredAllOrNone, setEnteredAllOrNone] = useState(false);
 
   //handlers
-  const submitHandler = (e) => {
+  const editHandler = (e) => {
     e.preventDefault();
 
     const appuserObj = JSON.parse(sessionStorage.getItem("app_user"));
@@ -113,27 +115,29 @@ export const TradeForm = ({ ticker }) => {
     tradeOrderObj.type = "Stock/ETF";
     tradeOrderObj.action = enteredAction;
     tradeOrderObj.priceType = enteredPriceType;
-    tradeOrderObj.limitPrice = parseFloat(enteredLimitPrice);
-    tradeOrderObj.stopPrice = parseFloat(enteredStopPrice);
+    tradeOrderObj.limitPrice =
+      enteredPriceType === "Market" ? 0.0 : parseFloat(enteredLimitPrice);
+    tradeOrderObj.stopPrice =
+      enteredPriceType === "Market" ? 0.0 : parseFloat(enteredStopPrice);
     tradeOrderObj.duration = enteredDuration;
     tradeOrderObj.allOrNone = enteredAllOrNone;
     tradeOrderObj.tradeDate = tradeDateObj;
     tradeOrderObj.settlementDate = settlementDateObj;
     tradeOrderObj.status =
-      enteredPriceType === "Market" ? "Executed" : "Submitted";
+      enteredPriceType === "Market" ? "Completed" : "Submitted";
 
     console.log(tradeOrderObj);
 
     const sendDataToApi = async () => {
       const options = {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(tradeOrderObj),
       };
 
-      const response = await fetch(`${api.JS_TRADE_ORDER}`, options);
+      const response = await fetch(`${api.JS_TRADE_ORDER}/${tradeId}`, options);
 
       if (!response.ok) {
         console.log(response.status, response.statusText);
@@ -146,6 +150,86 @@ export const TradeForm = ({ ticker }) => {
     };
     sendDataToApi();
   };
+
+  const cancelHandler = (e) => {
+    e.preventDefault();
+
+    const appuserObj = JSON.parse(sessionStorage.getItem("app_user"));
+
+    const tradeOrderObj = {};
+    const tradeDateObj = new Date().toLocaleDateString("en-CA");
+    const settlementDateObj = new Date(
+      new Date().valueOf() + 1000 * 60 * 60 * 24 * 3
+    ).toLocaleDateString("en-CA");
+
+    tradeOrderObj.customerId = appuserObj.id;
+    tradeOrderObj.accountId = 1;
+    tradeOrderObj.ticker = enteredTicker;
+    tradeOrderObj.quantity = parseFloat(enteredQuantity);
+    tradeOrderObj.type = "Stock/ETF";
+    tradeOrderObj.action = enteredAction;
+    tradeOrderObj.priceType = enteredPriceType;
+    tradeOrderObj.limitPrice =
+      enteredPriceType === "Market" ? 0.0 : parseFloat(enteredLimitPrice);
+    tradeOrderObj.stopPrice =
+      enteredPriceType === "Market" ? 0.0 : parseFloat(enteredStopPrice);
+    tradeOrderObj.duration = enteredDuration;
+    tradeOrderObj.allOrNone = enteredAllOrNone;
+    tradeOrderObj.tradeDate = tradeDateObj;
+    tradeOrderObj.settlementDate = settlementDateObj;
+    tradeOrderObj.status = "Cancelled";
+
+    console.log(tradeOrderObj);
+
+    const sendDataToApi = async () => {
+      const options = {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(tradeOrderObj),
+      };
+
+      const response = await fetch(`${api.JS_TRADE_ORDER}/${tradeId}`, options);
+
+      if (!response.ok) {
+        console.log(response.status, response.statusText);
+      } else {
+        console.log(`Trade Order Submitted`);
+        const tradeOrderResponseFromApi = await response.json();
+        console.log(tradeOrderResponseFromApi);
+        navigate("/home");
+      }
+    };
+    sendDataToApi();
+  };
+
+  useEffect(() => {
+    const getTradeDetails = async () => {
+      const response = await fetch(`${api.JS_TRADE_ORDER}${tradeId}`);
+
+      if (!response.ok) {
+        console.log(response.status, response.statusText);
+      } else {
+        const tradeOrderDetailsFromApi = await response.json();
+        console.log(tradeOrderDetailsFromApi);
+        setTradeOrderDetails(tradeOrderDetailsFromApi);
+      }
+    };
+    getTradeDetails();
+  }, []);
+
+  useEffect(() => {
+    //state vars
+    setEnteredTicker(tradeOrderDetails.ticker);
+    setEnteredQuantity(tradeOrderDetails.quantity);
+    setEnteredAction(tradeOrderDetails.action);
+    setEnteredPriceType(tradeOrderDetails.priceType);
+    setEnteredLimitPrice(tradeOrderDetails.limitPrice);
+    setEnteredStopPrice(tradeOrderDetails.stopPrice);
+    setEnteredDuration(tradeOrderDetails.duration);
+    setEnteredAllOrNone(tradeOrderDetails.allOrNone);
+  }, [tradeOrderDetails]);
 
   useEffect(() => {
     setEnteredTicker(ticker?.toUpperCase());
@@ -166,45 +250,16 @@ export const TradeForm = ({ ticker }) => {
         sx={{ textAlign: "center", padding: "1rem" }}
         gutterBottom
       >
-        {`Trade Order`}
+        {`Edit Trade Order`}
       </Typography>
-
       <AccountDetails />
-      <Box sx={{ padding: "2rem", marginLeft: "25%" }}>
-        <TextField
-          id="filled-required"
-          label="Symbol"
-          variant="filled"
-          required
-          // defaultValue={ticker}
-          value={enteredTicker}
-          onChange={(e) => {
-            setEnteredTicker(e.target.value.toUpperCase());
-          }}
-        />
-        <Button
-          variant="contained"
-          sx={{
-            marginLeft: "5%",
-            marginTop: "2%",
-            height: "2.5rem",
-            width: "6rem",
-          }}
-          onClick={(e) => {
-            setTickerForQuote(enteredTicker);
-          }}
-        >
-          <SearchIcon />{" "}
-        </Button>
-      </Box>
-
-      {tickerForQuote && <StockQuote ticker={tickerForQuote} />}
-
+      <StockQuote ticker={enteredTicker} />
       <Box sx={{ paddingTop: "1rem" }}>
         <TextField
           select
           id="filled-required"
           label="Action"
+          disabled
           variant="filled"
           sx={{ width: "30ch" }}
           value={enteredAction}
@@ -351,12 +406,11 @@ export const TradeForm = ({ ticker }) => {
           }}
         />
       </Box>
-
       <Box sx={{ width: "100%", textAlign: "center", marginTop: "3%" }}>
         <Stack direction="row" spacing={2} sx={{ marginLeft: "40%" }}>
           <Button
             variant="contained"
-            onClick={submitHandler}
+            onClick={editHandler}
             disabled={
               !enteredAction ||
               !enteredQuantity ||
@@ -365,16 +419,23 @@ export const TradeForm = ({ ticker }) => {
               !enteredDuration
             }
           >
-            Submit
+            Submit Changes
           </Button>
 
+          <Button variant="outlined" onClick={cancelHandler}>
+            Cancel Order
+          </Button>
+        </Stack>
+      </Box>
+      <Box sx={{ width: "100%", textAlign: "center", marginTop: "3%" }}>
+        <Stack direction="row" spacing={2} sx={{ marginLeft: "40%" }}>
           <Button
             variant="outlined"
             onClick={() => {
-              navigate(`/home`);
+              navigate(`/trade`);
             }}
           >
-            Cancel
+            Cancel changes and Exit
           </Button>
         </Stack>
       </Box>

@@ -12,6 +12,7 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
+import api from "../../config.json";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -50,10 +51,66 @@ export const CompanyDetails = ({ searchResult }) => {
   const navigate = useNavigate();
   const [value, setValue] = React.useState(0);
   const [ticker, setTicker] = useState("");
+  const [isTickerInWatchlist, setIsTickerInWatchlist] = useState(false);
+  const appuserObj = JSON.parse(sessionStorage.getItem("app_user"));
+
+  // handler
+  const addToWatchlistHandler = (e) => {
+    e.preventDefault();
+
+    const portfolioWatchlistObj = {};
+
+    portfolioWatchlistObj.customerId = appuserObj.id;
+    portfolioWatchlistObj.ticker = ticker;
+
+    console.log(portfolioWatchlistObj);
+
+    const sendDataToApi = async () => {
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(portfolioWatchlistObj),
+      };
+
+      const response = await fetch(`${api.JS_PORTFOLIO_WATCHLIST}`, options);
+
+      if (!response.ok) {
+        console.log(response.status, response.statusText);
+      } else {
+        const watchlistResponseFromApi = await response.json();
+        console.log(watchlistResponseFromApi);
+        console.log(`Stock added to watchlist`);
+        navigate("/watchlist");
+      }
+    };
+    sendDataToApi();
+  };
 
   useEffect(() => {
     setTicker(`${searchResult?.results?.ticker}`);
   }, [searchResult]);
+
+  useEffect(() => {
+    const getWatchList = async () => {
+      const response = await fetch(
+        `${api.JS_PORTFOLIO_WATCHLIST}?ticker=${ticker}&customerId=${appuserObj.id}`
+      );
+
+      if (!response.ok) {
+        console.log(response.status, response.statusText);
+      } else {
+        const watchlistResponseFromApi = await response.json();
+        console.log(watchlistResponseFromApi);
+        setIsTickerInWatchlist(false);
+        watchlistResponseFromApi.map((watchlist) => {
+          if (watchlist?.ticker === ticker) setIsTickerInWatchlist(true);
+        });
+      }
+    };
+    if (ticker) getWatchList();
+  }, [ticker]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -70,11 +127,13 @@ export const CompanyDetails = ({ searchResult }) => {
       </Typography>
       <Box sx={{ width: "100%", textAlign: "center" }}>
         <Stack direction="row" spacing={2} sx={{ marginLeft: "40%" }}>
-          <Tooltip title="Add to Watchlist" placement="top">
-            <Button variant="contained">
-              <AddOutlinedIcon />{" "}
-            </Button>
-          </Tooltip>
+          {!isTickerInWatchlist && (
+            <Tooltip title="Add to Watchlist" placement="top">
+              <Button variant="contained" onClick={addToWatchlistHandler}>
+                <AddOutlinedIcon />{" "}
+              </Button>
+            </Tooltip>
+          )}
 
           <Button
             variant="contained"
