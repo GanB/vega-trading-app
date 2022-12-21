@@ -18,16 +18,45 @@ const Item = styled(Paper)(({ theme }) => ({
 export const BalanceSheet = ({ balanceSheet }) => {
   const navigate = useNavigate();
 
+  const currencyFormatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
+  const financialsLoop = () => {
+    for (const key in balanceSheet) {
+      return (
+        <>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <Typography variant="body1" gutterBottom>
+                {`${balanceSheet[key].label} `}
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="body1" gutterBottom>
+                {`${currencyFormatter.format(
+                  isNaN(balanceSheet[key].value) ? 0.0 : balanceSheet[key].value
+                )} `}
+              </Typography>
+            </Grid>
+          </Grid>
+        </>
+      );
+    }
+  };
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}>
-          <Grid item xs={4}>
+          {financialsLoop()}
+          <Grid item xs={6}>
             <Typography variant="body1" gutterBottom>
               {`${balanceSheet?.fixed_assets?.label} `}
             </Typography>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={6}>
             <Typography variant="body1" gutterBottom>
               {`${balanceSheet?.fixed_assets?.value} `}
             </Typography>

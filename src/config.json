@@ -3,6 +3,8 @@
   "TICKER_SEARCH": "https://api.polygon.io/v3/reference/tickers/",
   "STOCK_FINANCIALS": "https://api.polygon.io/vX/reference/financials",
   "DAILY_OPEN_CLOSE": "https://api.polygon.io/v1/open-close/",
+  "NEWS_API": "https://api.polygon.io/v2/reference/news",
   "JS_TRADE_ORDER": "http://localhost:8088/tradeOrder/",
-  "JS_PORTFOLIO_WATCHLIST": "http://localhost:8088/portfolioWatchList/"
+  "JS_PORTFOLIO_WATCHLIST": "http://localhost:8088/portfolioWatchList/",
+  "JS_ACCOUNT": "http://localhost:8088/account/"
 }

@@ -7,6 +7,14 @@ import { Watchlist } from "../watchlists/Watchlist";
 import AppBar from "@mui/material/AppBar";
 import { TradeContainer } from "../trades/TradeContainer";
 import { EditTrade } from "../trades/EditTrade";
+import { Footer } from "../nav/Footer";
+import Drawer from "@mui/material/Drawer";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import List from "@mui/material/List";
+import Box from "@mui/material/Box";
 
 export const RegisteredUserViews = (props) => {
   const appUser = JSON.parse(sessionStorage.getItem("app_user"));
@@ -17,12 +25,20 @@ export const RegisteredUserViews = (props) => {
         path="/"
         element={
           <>
-            <Outlet />
-            <AppBar
-              position="fixed"
-              color="primary"
-              sx={{ top: "auto", bottom: 0 }}
-            ></AppBar>
+            <Box sx={{ width: "100%", height: "100vh" }}>
+              {/* <AppBar
+                position="fixed"
+                color="primary"
+                sx={{ top: "auto", bottom: 0 }}
+              ></AppBar> */}
+              {/* <AppBar
+                position="fixed"
+                color="primary"
+                sx={{ top: "auto", bottom: 0 }}
+              /> */}
+              <Outlet />
+              <Footer />
+            </Box>
           </>
         }
       >

@@ -9,6 +9,11 @@ import { BalanceSheet } from "./BalanceSheet";
 
 export const CompanyFinancials = ({ ticker }) => {
   const [financialsFromApi, setFinancialsFromApi] = useState({});
+  const [balanceSheetInfo, setBalanceSheetInfo] = useState({});
+  const [cashFlowInfo, setCashFlowInfo] = useState({});
+  const [comprehensiveIncomeInfo, setComprehensiveIncomeInfo] = useState({});
+  const [incomeStatementInfo, setIncomeeStatementInfo] = useState({});
+
   const STOCK_FINANCIALS_API = `${
     api.STOCK_FINANCIALS
   }?ticker=${ticker.toUpperCase()}&timeframe=annual&filing_date.gte=2022-01-01&apiKey=${
@@ -19,7 +24,20 @@ export const CompanyFinancials = ({ ticker }) => {
     const fetchData = async () => {
       const response = await fetch(STOCK_FINANCIALS_API);
       const financialsResultFromApi = await response.json();
+      console.log(financialsResultFromApi.results[0].financials.balance_sheet);
       setFinancialsFromApi(financialsResultFromApi.results[0]);
+      setBalanceSheetInfo(
+        financialsResultFromApi.results[0].financials.balance_sheet
+      );
+      setCashFlowInfo(
+        financialsResultFromApi.results[0].financials.cash_flow_statement
+      );
+      setComprehensiveIncomeInfo(
+        financialsResultFromApi.results[0].financials.comprehensive_income
+      );
+      setIncomeeStatementInfo(
+        financialsResultFromApi.results[0].financials.income_statement
+      );
     };
     fetchData();
   }, []);
@@ -35,9 +53,7 @@ export const CompanyFinancials = ({ ticker }) => {
           <Typography>Balance Sheet</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <BalanceSheet
-            balanceSheet={financialsFromApi?.financials?.balance_sheet}
-          />
+          <BalanceSheet balanceSheet={balanceSheetInfo} />
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -49,10 +65,7 @@ export const CompanyFinancials = ({ ticker }) => {
           <Typography>Cash Flow Statement</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <BalanceSheet balanceSheet={cashFlowInfo} />
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -64,10 +77,7 @@ export const CompanyFinancials = ({ ticker }) => {
           <Typography>Comprehensive Income</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <BalanceSheet balanceSheet={comprehensiveIncomeInfo} />
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -79,10 +89,9 @@ export const CompanyFinancials = ({ ticker }) => {
           <Typography>Income Statement</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <AccordionDetails>
+            <BalanceSheet balanceSheet={incomeStatementInfo} />
+          </AccordionDetails>
         </AccordionDetails>
       </Accordion>
     </div>
