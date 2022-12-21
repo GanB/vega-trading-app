@@ -5,9 +5,9 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import api from "../../config.json";
-import { BalanceSheet } from "./BalanceSheet";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import MediaCard from "./MediaCard";
 
 export const CompanyNews = ({ ticker }) => {
   const [tickerNews, setTickerNews] = useState([]);
@@ -28,28 +28,48 @@ export const CompanyNews = ({ ticker }) => {
 
   return (
     <div>
-      {" "}
-      <Box sx={{ flexGrow: 1 }}>
+      <Box
+        sx={{
+          flexGrow: 2,
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "space-evenly",
+        }}
+      >
         {tickerNews.map((item) => {
           return (
-            <Grid container spacing={2}>
-              <Grid item xs={4}>
-                <Typography variant="body1" gutterBottom>
-                  {item.description}
-                </Typography>
-              </Grid>
-              <Grid item xs={8}>
-                <Typography
-                  variant="body1"
-                  component="a"
-                  target="_blank"
-                  href={item.article_url}
-                  gutterBottom
-                >
-                  {item.article_url}
-                </Typography>
-              </Grid>
-            </Grid>
+            // <Grid
+            //   container
+            //   spacing={2}
+            //   sx={{
+            //     padding: "1rem",
+            //     borderStyle: "solid",
+            //     borderSpacing: "1rem",
+            //     borderColor: "#03045e",
+            //     borderRadius: "15px",
+            //     marginTop: "0.5rem",
+            //     borderWidth: "0.10rem",
+            //   }}
+            // >
+            //   <Grid item xs={6}>
+            //     <Typography variant="body2" gutterBottom>
+            //       {item.description}
+            //     </Typography>
+            //   </Grid>
+            //   <Grid item xs={6}>
+            //     <Typography
+            //       variant="body1"
+            //       component="a"
+            //       target="_blank"
+            //       href={item.article_url}
+            //       gutterBottom
+            //     >
+            //       {item.title}
+            //     </Typography>
+            //   </Grid>
+            // </Grid>
+            <MediaCard data={item} />
           );
         })}
       </Box>

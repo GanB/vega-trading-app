@@ -20,7 +20,18 @@ export const CompanyProfile = ({ searchResult }) => {
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          padding: "1rem",
+          borderStyle: "solid",
+          borderSpacing: "1rem",
+          borderColor: "#03045e",
+          borderRadius: "15px",
+          marginTop: "0.5rem",
+          borderWidth: "0.10rem",
+        }}
+      >
         <Grid container spacing={2}>
           <Grid item xs={4}>
             <Typography variant="body1" gutterBottom>

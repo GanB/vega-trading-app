@@ -5,7 +5,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import api from "../../config.json";
-import { BalanceSheet } from "./BalanceSheet";
+import { Financials } from "./Financials";
 
 export const CompanyFinancials = ({ ticker }) => {
   const [financialsFromApi, setFinancialsFromApi] = useState({});
@@ -50,10 +50,10 @@ export const CompanyFinancials = ({ ticker }) => {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography>Balance Sheet</Typography>
+          <Typography variant="h4">Balance Sheet</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <BalanceSheet balanceSheet={balanceSheetInfo} />
+          <Financials balanceSheet={balanceSheetInfo} />
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -62,10 +62,10 @@ export const CompanyFinancials = ({ ticker }) => {
           aria-controls="panel2a-content"
           id="panel2a-header"
         >
-          <Typography>Cash Flow Statement</Typography>
+          <Typography variant="h4">Cash Flow Statement</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <BalanceSheet balanceSheet={cashFlowInfo} />
+          <Financials balanceSheet={cashFlowInfo} />
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -74,10 +74,10 @@ export const CompanyFinancials = ({ ticker }) => {
           aria-controls="panel2a-content"
           id="panel2a-header"
         >
-          <Typography>Comprehensive Income</Typography>
+          <Typography variant="h4">Comprehensive Income</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <BalanceSheet balanceSheet={comprehensiveIncomeInfo} />
+          <Financials balanceSheet={comprehensiveIncomeInfo} />
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -86,11 +86,11 @@ export const CompanyFinancials = ({ ticker }) => {
           aria-controls="panel2a-content"
           id="panel2a-header"
         >
-          <Typography>Income Statement</Typography>
+          <Typography variant="h4">Income Statement</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <AccordionDetails>
-            <BalanceSheet balanceSheet={incomeStatementInfo} />
+            <Financials balanceSheet={incomeStatementInfo} />
           </AccordionDetails>
         </AccordionDetails>
       </Accordion>

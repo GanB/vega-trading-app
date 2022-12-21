@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
@@ -15,17 +15,20 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export const BalanceSheet = ({ balanceSheet }) => {
+export const Financials = ({ balanceSheet }) => {
   const navigate = useNavigate();
+  const [financialData, setFinancialData] = useState([]);
 
   const currencyFormatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
   });
 
-  const financialsLoop = () => {
+  useEffect(() => {
+    const dataMap = [];
+
     for (const key in balanceSheet) {
-      return (
+      dataMap.push(
         <>
           <Grid container spacing={2}>
             <Grid item xs={6}>
@@ -34,7 +37,11 @@ export const BalanceSheet = ({ balanceSheet }) => {
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography variant="body1" gutterBottom>
+              <Typography
+                variant="body1"
+                gutterBottom
+                sx={{ display: "flex", justifyContent: "flex-end" }}
+              >
                 {`${currencyFormatter.format(
                   isNaN(balanceSheet[key].value) ? 0.0 : balanceSheet[key].value
                 )} `}
@@ -44,24 +51,24 @@ export const BalanceSheet = ({ balanceSheet }) => {
         </>
       );
     }
-  };
+    setFinancialData(dataMap);
+  }, [balanceSheet]);
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2}>
-          {financialsLoop()}
-          <Grid item xs={6}>
-            <Typography variant="body1" gutterBottom>
-              {`${balanceSheet?.fixed_assets?.label} `}
-            </Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography variant="body1" gutterBottom>
-              {`${balanceSheet?.fixed_assets?.value} `}
-            </Typography>
-          </Grid>
-        </Grid>
+      <Box
+        sx={{
+          flexGrow: 1,
+          padding: "1rem",
+          borderStyle: "solid",
+          borderSpacing: "1rem",
+          borderColor: "#03045e",
+          borderRadius: "15px",
+          marginTop: "0.5rem",
+          borderWidth: "0.10rem",
+        }}
+      >
+        {financialData.map((item) => item)}
       </Box>
     </>
   );
