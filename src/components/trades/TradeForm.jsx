@@ -200,91 +200,53 @@ export const TradeForm = ({ ticker }) => {
 
       {tickerForQuote && <StockQuote ticker={tickerForQuote} />}
 
-      <Box sx={{ paddingTop: "1rem" }}>
-        <TextField
-          select
-          id="filled-required"
-          label="Action"
-          variant="filled"
-          sx={{ width: "30ch" }}
-          value={enteredAction}
-          onChange={(e) => {
-            setEnteredAction(e.target.value);
-          }}
-        >
-          {action.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-        <TextField
-          id="filled-required"
-          label="Quantity"
-          variant="filled"
-          sx={{ width: "30ch" }}
-          value={enteredQuantity}
-          onChange={(e) => {
-            setEnteredQuantity(e.target.value);
-          }}
-        />
-        <TextField
-          select
-          id="filled-required"
-          label="Price Type"
-          variant="filled"
-          sx={{ width: "30ch" }}
-          value={enteredPriceType}
-          onChange={(e) => {
-            setEnteredPriceType(e.target.value);
-          }}
-        >
-          {priceTypes.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-        {enteredPriceType === "Limit" ? (
+      {tickerForQuote &&
+        <Box sx={{ paddingTop: "1rem" }}>
           <TextField
+            select
             id="filled-required"
-            label="Limit Price"
+            label="Action"
             variant="filled"
             sx={{ width: "30ch" }}
-            value={enteredLimitPrice}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">$</InputAdornment>
-              ),
-            }}
+            value={enteredAction}
             onChange={(e) => {
-              setEnteredLimitPrice(e.target.value);
+              setEnteredAction(e.target.value);
             }}
-          />
-        ) : (
-          ""
-        )}
-        {enteredPriceType === "StopOnQuote" ? (
+          >
+            {action.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
           <TextField
             id="filled-required"
-            label="Stop Price"
+            label="Quantity"
             variant="filled"
             sx={{ width: "30ch" }}
-            value={enteredStopPrice}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">$</InputAdornment>
-              ),
-            }}
+            value={enteredQuantity}
             onChange={(e) => {
-              setEnteredStopPrice(e.target.value);
+              setEnteredQuantity(e.target.value);
             }}
           />
-        ) : (
-          ""
-        )}
-        {enteredPriceType === "StopLimitOnQuote" ? (
-          <>
+          <TextField
+            select
+            id="filled-required"
+            label="Price Type"
+            variant="filled"
+            sx={{ width: "30ch" }}
+            value={enteredPriceType}
+            onChange={(e) => {
+              setEnteredPriceType(e.target.value);
+            }}
+          >
+            {priceTypes.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          {enteredPriceType === "Limit" ? (
             <TextField
               id="filled-required"
               label="Limit Price"
@@ -300,6 +262,10 @@ export const TradeForm = ({ ticker }) => {
                 setEnteredLimitPrice(e.target.value);
               }}
             />
+          ) : (
+            ""
+          )}
+          {enteredPriceType === "StopOnQuote" ? (
             <TextField
               id="filled-required"
               label="Stop Price"
@@ -315,42 +281,77 @@ export const TradeForm = ({ ticker }) => {
                 setEnteredStopPrice(e.target.value);
               }}
             />
-          </>
-        ) : (
-          ""
-        )}
-        <TextField
-          select
-          id="filled-required"
-          label="Duration"
-          variant="filled"
-          sx={{ width: "30ch" }}
-          value={enteredDuration}
-          onChange={(e) => {
-            setEnteredDuration(e.target.value);
-          }}
-        >
-          {durations.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
+          ) : (
+            ""
+          )}
+          {enteredPriceType === "StopLimitOnQuote" ? (
+            <>
+              <TextField
+                id="filled-required"
+                label="Limit Price"
+                variant="filled"
+                sx={{ width: "30ch" }}
+                value={enteredLimitPrice}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">$</InputAdornment>
+                  ),
+                }}
+                onChange={(e) => {
+                  setEnteredLimitPrice(e.target.value);
+                }}
+              />
+              <TextField
+                id="filled-required"
+                label="Stop Price"
+                variant="filled"
+                sx={{ width: "30ch" }}
+                value={enteredStopPrice}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">$</InputAdornment>
+                  ),
+                }}
+                onChange={(e) => {
+                  setEnteredStopPrice(e.target.value);
+                }}
+              />
+            </>
+          ) : (
+            ""
+          )}
+          <TextField
+            select
+            id="filled-required"
+            label="Duration"
+            variant="filled"
+            sx={{ width: "30ch" }}
+            value={enteredDuration}
+            onChange={(e) => {
+              setEnteredDuration(e.target.value);
+            }}
+          >
+            {durations.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
 
-        <FormControlLabel
-          sx={{
-            marginLeft: "10%",
-            "& .MuiSvgIcon-root": { fontSize: 28 },
-            marginTop: "1rem",
-          }}
-          control={<Switch />}
-          label="All or None"
-          value={enteredAllOrNone}
-          onChange={(e) => {
-            setEnteredAllOrNone(e.target.checked);
-          }}
-        />
-      </Box>
+          <FormControlLabel
+            sx={{
+              marginLeft: "10%",
+              "& .MuiSvgIcon-root": { fontSize: 28 },
+              marginTop: "1rem",
+            }}
+            control={<Switch />}
+            label="All or None"
+            value={enteredAllOrNone}
+            onChange={(e) => {
+              setEnteredAllOrNone(e.target.checked);
+            }}
+          />
+        </Box>}
 
       <Box sx={{ width: "100%", textAlign: "center", marginTop: "3%" }}>
         <Stack direction="row" spacing={2} sx={{ marginLeft: "40%" }}>

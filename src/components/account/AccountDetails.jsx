@@ -8,11 +8,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 import api from "../../config.json";
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#edf2fb",
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: "center",
-  color: theme.palette.text.secondary,
+  color: theme.palette.text.primary,
   fontWeight: "900",
 }));
 
@@ -21,10 +21,30 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
   currency: "USD",
 });
 
+const appuserObj = JSON.parse(sessionStorage.getItem("app_user"));
+
 export const AccountDetails = () => {
   const navigate = useNavigate();
   // const { state } = useLocation();
   const [dailyQuote, setDailyQuote] = useState({});
+  const [accountDetails, setAccountDetails] = useState([]);
+
+  useEffect(() => {
+    const getAccountDetails = async () => {
+      const response = await fetch(
+        `${api.JS_ACCOUNT}?customerId=${appuserObj.id}`
+      );
+
+      if (!response.ok) {
+        console.log(response.status, response.statusText);
+      } else {
+        const accountDetailsFromApi = await response.json();
+        console.log(accountDetailsFromApi);
+        setAccountDetails(accountDetailsFromApi[0]);
+      }
+    };
+    getAccountDetails();
+  }, []);
 
   return (
     <Box sx={{ width: "100%", padding: "2rem", marginLeft: "10%" }}>
@@ -38,7 +58,7 @@ export const AccountDetails = () => {
             <Item>Account Number</Item>
           </Grid>
           <Grid item xs={2}>
-            <Item>112220309303</Item>
+            <Item>{accountDetails.accountNumber}</Item>
           </Grid>
         </Grid>
         <Grid
@@ -51,14 +71,24 @@ export const AccountDetails = () => {
           </Grid>
           <Grid item xs={2}>
             <Item>
-              {currencyFormatter.format(isNaN(100000) ? 0.0 : 100000)}
+              {currencyFormatter.format(
+                isNaN(accountDetails.netAccountValue)
+                  ? 0.0
+                  : accountDetails.netAccountValue
+              )}
             </Item>
           </Grid>
           <Grid item xs={3}>
             <Item>Total Cash Purchasing Power</Item>
           </Grid>
           <Grid item xs={2}>
-            <Item>{currencyFormatter.format(isNaN(1000) ? 0.0 : 1000)}</Item>
+            <Item>
+              {currencyFormatter.format(
+                isNaN(accountDetails.totalCashPurchasingPower)
+                  ? 0.0
+                  : accountDetails.totalCashPurchasingPower
+              )}
+            </Item>
           </Grid>
         </Grid>
         <Grid
@@ -70,13 +100,21 @@ export const AccountDetails = () => {
             <Item>Settled</Item>
           </Grid>
           <Grid item xs={2}>
-            <Item>{currencyFormatter.format(isNaN(100) ? 0.0 : 100)}</Item>
+            <Item>
+              {currencyFormatter.format(
+                isNaN(accountDetails.settled) ? 0.0 : accountDetails.settled
+              )}
+            </Item>
           </Grid>
           <Grid item xs={3}>
             <Item>UnSettled</Item>
           </Grid>
           <Grid item xs={2}>
-            <Item>{currencyFormatter.format(isNaN(0) ? 0.0 : 0)}</Item>
+            <Item>
+              {currencyFormatter.format(
+                isNaN(accountDetails.unSettled) ? 0.0 : accountDetails.unSettled
+              )}
+            </Item>
           </Grid>
         </Grid>
       </Grid>

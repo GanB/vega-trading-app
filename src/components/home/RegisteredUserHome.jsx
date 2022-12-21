@@ -5,6 +5,8 @@ import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import { rows, columns } from "../data/DailyMovers";
 import Typography from "@mui/material/Typography";
+import { AccountDetails } from "../account/AccountDetails";
+
 
 export const RegisteredUserHome = () => {
   const [stocksList, setStocksList] = useState([]);
@@ -43,31 +45,23 @@ export const RegisteredUserHome = () => {
       };
       const response = await fetch(STOCK_SYMBOL_API, options);
       const stocksList = await response.json();
-      console.log(stocksList.results);
-      setStocksList(stocksList.results);
+      console.log(stocksList.results.slice(0, 100));
+      setStocksList(stocksList.results.slice(0, 100));
     };
     fetchStocksList();
   }, []);
 
   useEffect(() => {
-    const dataGridRows = stocksList.map((stock) => {
+    const dataGridRows = stocksList?.map((stock) => {
       return {
         id: stock.T,
-        closePrice: currencyFormatter.format(isNaN(stock.c) ? 0.0 : stock.c),
-        openPrice: currencyFormatter.format(isNaN(stock.o) ? 0.0 : stock.o),
+        closePrice: stock.c,
+        openPrice: stock.o,
         high: stock.h,
         low: stock.l,
-        n: stock.n,
-        volume: stock.v,
-        vw: stock.vw,
-        term: stock.duration,
-        price:
-          stock.priceType === "Market"
-            ? "Mkt"
-            : currencyFormatter.format(
-                isNaN(stock.limitPrice) ? 0.0 : stock.limitPrice
-              ),
-        status: stock.status,
+        numberOfTransactions: stock.n,
+        volume: stock.v.toLocaleString(),
+        volumeWeightedAveragePrice: stock.vw,
       };
     });
 
@@ -76,41 +70,34 @@ export const RegisteredUserHome = () => {
   }, [stocksList]);
 
   return (
-    <Box sx={{ height: 400, width: "100%" }}>
-      <Typography variant="h3" gutterBottom>
-        Daily Movers
-      </Typography>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        disableSelectionOnClick
-        sx={{
-          borderColor: "#06101f",
-          border: 2,
-          boxShadow: 2,
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: "#f7f7ff",
-            fontSize: "1rem",
-          },
-          bgcolor: "background.paper",
-          overflow: "auto",
-        }}
-      />
+    <Box>
+      <Box sx={{ height: 400, width: "100%", marginTop: "2rem" }}>
+        <Typography variant="h3" gutterBottom>
+          Daily Movers
+        </Typography>
+        <DataGrid
+          rows={dataGridFormattted}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          disableSelectionOnClick
+          sx={{
+            borderColor: "#06101f",
+            border: 2,
+            boxShadow: 2,
+            "& .MuiDataGrid-columnHeaders": {
+              backgroundColor: "#f7f7ff",
+              fontSize: "1rem",
+            },
+            bgcolor: "background.paper",
+            overflow: "auto",
+          }}
+        />
+      </Box>
+      <Box sx={{ marginTop: "8rem" }}>
+        <Typography variant="h4">Account Details</Typography>
+        <AccountDetails />
+      </Box>
     </Box>
-    // <>
-    //   <article className="stocks__list">
-    //     {console.log(stocksList)}
-    //     {stocksList.map((stockSymbol) => (
-    //       <section key={stockSymbol.T}>
-    //         Ticker:{stockSymbol.T}-- Open Price: {stockSymbol.o}-- Close Price:
-    //         {stockSymbol.c}-- Highest Price: {stockSymbol.h}-- Lowest Price:{" "}
-    //         {stockSymbol.l}-- Volume: {stockSymbol.v}-- Volume Weighted Average:{" "}
-    //         {stockSymbol.vw}-- Number Of Transctions: {stockSymbol.n}--
-    //       </section>
-    //     ))}
-    //   </article>
-    // </>
   );
 };

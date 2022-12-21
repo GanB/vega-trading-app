@@ -1,6 +1,8 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -30,6 +32,37 @@ export const columns = [
     },
   },
   {
+    field: "high",
+    headerName: "High",
+    headerAlign: "center",
+    type: "number",
+    width: 150,
+    valueGetter: (params) => {
+      return currencyFormatter.format(
+        isNaN(params.row.high) ? 0.0 : params.row.high
+      );
+    },
+  },
+  {
+    field: "low",
+    headerName: "Low",
+    headerAlign: "center",
+    type: "number",
+    width: 150,
+    valueGetter: (params) => {
+      return currencyFormatter.format(
+        isNaN(params.row.low) ? 0.0 : params.row.low
+      );
+    },
+  },
+  {
+    field: "numberOfTransactions",
+    headerName: "Transactions",
+    headerAlign: "center",
+    type: "number",
+    width: 150,
+  },
+  {
     field: "openPrice",
     headerName: "Open",
     headerAlign: "center",
@@ -47,6 +80,20 @@ export const columns = [
     headerAlign: "center",
     type: "number",
     width: 150,
+  },
+  {
+    field: "volumeWeightedAveragePrice",
+    headerName: "Vol Weighted Avg",
+    headerAlign: "center",
+    type: "number",
+    width: 150,
+    valueGetter: (params) => {
+      return currencyFormatter.format(
+        isNaN(params.row.volumeWeightedAveragePrice)
+          ? 0.0
+          : params.row.volumeWeightedAveragePrice
+      );
+    },
   },
 ];
 

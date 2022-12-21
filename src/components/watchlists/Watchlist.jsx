@@ -16,6 +16,8 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { AccountDetails } from "../account/AccountDetails";
 import api from "../../config.json";
 import { DataGrid } from "@mui/x-data-grid";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import IconButton from "@mui/material/IconButton";
 
 export const Watchlist = () => {
   const navigate = useNavigate();
@@ -39,7 +41,7 @@ export const Watchlist = () => {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
+    { field: "id", headerName: "ID", width: 90, hide: true },
     {
       field: "trade",
       headerName: "",
@@ -103,10 +105,12 @@ export const Watchlist = () => {
       field: "delete",
       headerName: "",
       width: 110,
+      align: "center",
       renderCell: (params) => {
         return (
-          <Button
+          <IconButton
             variant="outlined"
+            sx={{ textAlign: "center", color: "#d90429" }}
             onClick={() => {
               console.log("delete button clicked", params.row);
               // navigate(`/trade/edit/${params.row.id}`);
@@ -135,8 +139,8 @@ export const Watchlist = () => {
               sendDataToApi();
             }}
           >
-            Delete
-          </Button>
+            <DeleteOutlinedIcon />
+          </IconButton>
         );
       },
     },

@@ -5,10 +5,15 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import api from "../../config.json";
-import { BalanceSheet } from "./BalanceSheet";
+import { Financials } from "./Financials";
 
 export const CompanyFinancials = ({ ticker }) => {
   const [financialsFromApi, setFinancialsFromApi] = useState({});
+  const [balanceSheetInfo, setBalanceSheetInfo] = useState({});
+  const [cashFlowInfo, setCashFlowInfo] = useState({});
+  const [comprehensiveIncomeInfo, setComprehensiveIncomeInfo] = useState({});
+  const [incomeStatementInfo, setIncomeeStatementInfo] = useState({});
+
   const STOCK_FINANCIALS_API = `${
     api.STOCK_FINANCIALS
   }?ticker=${ticker.toUpperCase()}&timeframe=annual&filing_date.gte=2022-01-01&apiKey=${
@@ -19,7 +24,20 @@ export const CompanyFinancials = ({ ticker }) => {
     const fetchData = async () => {
       const response = await fetch(STOCK_FINANCIALS_API);
       const financialsResultFromApi = await response.json();
+      console.log(financialsResultFromApi.results[0].financials.balance_sheet);
       setFinancialsFromApi(financialsResultFromApi.results[0]);
+      setBalanceSheetInfo(
+        financialsResultFromApi.results[0].financials.balance_sheet
+      );
+      setCashFlowInfo(
+        financialsResultFromApi.results[0].financials.cash_flow_statement
+      );
+      setComprehensiveIncomeInfo(
+        financialsResultFromApi.results[0].financials.comprehensive_income
+      );
+      setIncomeeStatementInfo(
+        financialsResultFromApi.results[0].financials.income_statement
+      );
     };
     fetchData();
   }, []);
@@ -32,12 +50,10 @@ export const CompanyFinancials = ({ ticker }) => {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography>Balance Sheet</Typography>
+          <Typography variant="h4">Balance Sheet</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <BalanceSheet
-            balanceSheet={financialsFromApi?.financials?.balance_sheet}
-          />
+          <Financials balanceSheet={balanceSheetInfo} />
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -46,13 +62,10 @@ export const CompanyFinancials = ({ ticker }) => {
           aria-controls="panel2a-content"
           id="panel2a-header"
         >
-          <Typography>Cash Flow Statement</Typography>
+          <Typography variant="h4">Cash Flow Statement</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <Financials balanceSheet={cashFlowInfo} />
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -61,13 +74,10 @@ export const CompanyFinancials = ({ ticker }) => {
           aria-controls="panel2a-content"
           id="panel2a-header"
         >
-          <Typography>Comprehensive Income</Typography>
+          <Typography variant="h4">Comprehensive Income</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <Financials balanceSheet={comprehensiveIncomeInfo} />
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -76,13 +86,12 @@ export const CompanyFinancials = ({ ticker }) => {
           aria-controls="panel2a-content"
           id="panel2a-header"
         >
-          <Typography>Income Statement</Typography>
+          <Typography variant="h4">Income Statement</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <AccordionDetails>
+            <Financials balanceSheet={incomeStatementInfo} />
+          </AccordionDetails>
         </AccordionDetails>
       </Accordion>
     </div>
