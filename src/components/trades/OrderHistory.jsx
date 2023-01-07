@@ -167,8 +167,21 @@ export const OrderHistory = () => {
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          checkboxSelection
           disableSelectionOnClick
+          initialState={{
+            columns: { columnVisibilityModel: { id: false } },
+          }}
+          sx={{
+            borderColor: "#06101f",
+            border: 2,
+            boxShadow: 2,
+            "& .MuiDataGrid-columnHeaders": {
+              backgroundColor: "#f7f7ff",
+              fontSize: "1rem",
+            },
+            bgcolor: "background.paper",
+            overflow: "auto",
+          }}
         />
       </Box>
     </Box>

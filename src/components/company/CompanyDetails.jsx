@@ -170,16 +170,39 @@ export const CompanyDetails = ({ searchResult }) => {
         {`${searchResult?.results?.name} (${searchResult?.results?.ticker})`}
       </Typography>
       <Box sx={{ width: "100%", textAlign: "center" }}>
-        <Stack direction="row" spacing={2} sx={{ marginLeft: "40%" }}>
+        <Stack direction="row" spacing={2} sx={{ marginLeft: "33%" }}>
           {!isTickerInWatchlist && (
             <Tooltip title="Add to Watchlist" placement="top">
-              <Button variant="contained" onClick={addToWatchlistHandler}>
+              <Button
+                sx={{
+                  backgroundColor: "#003566",
+                  width: "30%",
+                  fontSize: "large",
+                  fontWeight: "bold",
+                  color: "#ffffff",
+                  "&:hover": {
+                    background: "#003566",
+                  },
+                }}
+                variant="contained"
+                onClick={addToWatchlistHandler}
+              >
                 <AddOutlinedIcon />{" "}
               </Button>
             </Tooltip>
           )}
 
           <Button
+            sx={{
+              backgroundColor: "#003566",
+              width: "30%",
+              fontSize: "large",
+              fontWeight: "bold",
+              color: "#ffffff",
+              "&:hover": {
+                background: "#003566",
+              },
+            }}
             variant="contained"
             onClick={() => {
               navigate(`/trade`, { state: { ticker } });

@@ -410,6 +410,16 @@ export const EditTrade = ({ ticker }) => {
         <Stack direction="row" spacing={2} sx={{ marginLeft: "40%" }}>
           <Button
             variant="contained"
+            sx={{
+              backgroundColor: "#003566",
+              width: "30%",
+              fontSize: "large",
+              fontWeight: "bold",
+              color: "#ffffff",
+              "&:hover": {
+                background: "#003566",
+              },
+            }}
             onClick={editHandler}
             disabled={
               !enteredAction ||
@@ -422,7 +432,16 @@ export const EditTrade = ({ ticker }) => {
             Submit Changes
           </Button>
 
-          <Button variant="outlined" onClick={cancelHandler}>
+          <Button
+            sx={{
+              width: "30%",
+              fontSize: "medium",
+              fontWeight: "bold",
+              color: "#000000",
+            }}
+            variant="outlined"
+            onClick={cancelHandler}
+          >
             Cancel Order
           </Button>
         </Stack>
@@ -430,6 +449,12 @@ export const EditTrade = ({ ticker }) => {
       <Box sx={{ width: "100%", textAlign: "center", marginTop: "3%" }}>
         <Stack direction="row" spacing={2} sx={{ marginLeft: "40%" }}>
           <Button
+            sx={{
+              width: "50%",
+              fontSize: "medium",
+              fontWeight: "bold",
+              color: "#000000",
+            }}
             variant="outlined"
             onClick={() => {
               navigate(`/trade`);

@@ -20,9 +20,8 @@ export const Footer = () => {
   const [value, setValue] = React.useState(0);
 
   return (
-    <Box sx={{ width: "100%", height: "1rem", marginTop: "20%" }}>
+    <Box sx={{ width: "100%" }}>
       <BottomNavigation
-        showLabels
         value={value}
         sx={{
           backgroundColor: "#edf2f4",
@@ -55,7 +54,6 @@ export const Footer = () => {
         <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} /> */}
       </BottomNavigation>
       <BottomNavigation
-        showLabels
         value={value}
         sx={{
           backgroundColor: "#edf2f4",
@@ -67,7 +65,7 @@ export const Footer = () => {
       >
         <Typography
           variant="body2"
-          sx={{ textAlign: "center", padding: "1rem" }}
+          sx={{ textAlign: "center", padding: "1rem", fontWeight: "bold" }}
           gutterBottom
         >
           {`Copyright © 2022 Vega Trade`}
@@ -77,8 +75,7 @@ export const Footer = () => {
         <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
         <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} /> */}
       </BottomNavigation>
-      <BottomNavigation
-        showLabels
+      {/* <BottomNavigation
         value={value}
         sx={{
           backgroundColor: "#edf2f4",
@@ -87,7 +84,7 @@ export const Footer = () => {
         // onChange={(event, newValue) => {
         //   setValue(newValue);
         // }}
-      ></BottomNavigation>
+      ></BottomNavigation> */}
     </Box>
   );
 };

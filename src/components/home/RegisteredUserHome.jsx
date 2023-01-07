@@ -7,7 +7,6 @@ import { rows, columns } from "../data/DailyMovers";
 import Typography from "@mui/material/Typography";
 import { AccountDetails } from "../account/AccountDetails";
 
-
 export const RegisteredUserHome = () => {
   const [stocksList, setStocksList] = useState([]);
   const [dataGridFormattted, setDataGridFormattted] = useState([]);
@@ -70,7 +69,7 @@ export const RegisteredUserHome = () => {
   }, [stocksList]);
 
   return (
-    <Box>
+    <Box sx={{ padding: "1rem" }}>
       <Box sx={{ height: 400, width: "100%", marginTop: "2rem" }}>
         <Typography variant="h3" gutterBottom>
           Daily Movers
@@ -95,7 +94,7 @@ export const RegisteredUserHome = () => {
         />
       </Box>
       <Box sx={{ marginTop: "8rem" }}>
-        <Typography variant="h4">Account Details</Typography>
+        <Typography variant="h3">Account Details</Typography>
         <AccountDetails />
       </Box>
     </Box>

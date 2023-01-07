@@ -24,7 +24,7 @@ const settings = ["Profile", "Logout"];
 
 export const RegisteredUserNav = () => {
   const navigate = useNavigate();
-  const appUser = JSON.parse(localStorage.getItem("app_user"));
+  const appUser = JSON.parse(sessionStorage.getItem("app_user"));
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -65,7 +65,11 @@ export const RegisteredUserNav = () => {
               textDecoration: "none",
             }}
           >
-            Vega Trade
+            <img
+              className="logo__image"
+              src="images/v-logo-2.png"
+              alt="company logo"
+            ></img>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -150,7 +154,10 @@ export const RegisteredUserNav = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Ganesh Babu" src="/static/images/avatar/2.jpg" />
+                <Avatar
+                  alt={appUser.fullName}
+                  src="/static/images/avatar/2.jpg"
+                />
               </IconButton>
             </Tooltip>
             <Menu

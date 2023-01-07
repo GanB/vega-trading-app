@@ -47,7 +47,14 @@ export const AccountDetails = () => {
   }, []);
 
   return (
-    <Box sx={{ width: "100%", padding: "2rem", marginLeft: "10%" }}>
+    <Box
+      sx={{
+        width: "100%",
+        padding: "2rem",
+        marginLeft: "10%",
+        marginTop: "1rem",
+      }}
+    >
       <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         <Grid
           container

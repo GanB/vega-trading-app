@@ -187,8 +187,9 @@ export const TradeForm = ({ ticker }) => {
           sx={{
             marginLeft: "5%",
             marginTop: "2%",
-            height: "2.5rem",
-            width: "6rem",
+            height: "3rem",
+            width: "20%",
+            backgroundColor: "#003566",
           }}
           onClick={(e) => {
             setTickerForQuote(enteredTicker);
@@ -200,7 +201,7 @@ export const TradeForm = ({ ticker }) => {
 
       {tickerForQuote && <StockQuote ticker={tickerForQuote} />}
 
-      {tickerForQuote &&
+      {tickerForQuote && (
         <Box sx={{ paddingTop: "1rem" }}>
           <TextField
             select
@@ -351,11 +352,22 @@ export const TradeForm = ({ ticker }) => {
               setEnteredAllOrNone(e.target.checked);
             }}
           />
-        </Box>}
+        </Box>
+      )}
 
       <Box sx={{ width: "100%", textAlign: "center", marginTop: "3%" }}>
-        <Stack direction="row" spacing={2} sx={{ marginLeft: "40%" }}>
+        <Stack direction="row" spacing={2} sx={{ marginLeft: "30%" }}>
           <Button
+            sx={{
+              backgroundColor: "#003566",
+              width: "30%",
+              fontSize: "large",
+              fontWeight: "bold",
+              color: "#ffffff",
+              "&:hover": {
+                background: "#003566",
+              },
+            }}
             variant="contained"
             onClick={submitHandler}
             disabled={
@@ -370,6 +382,12 @@ export const TradeForm = ({ ticker }) => {
           </Button>
 
           <Button
+            sx={{
+              width: "30%",
+              fontSize: "medium",
+              fontWeight: "bold",
+              color: "#000000",
+            }}
             variant="outlined"
             onClick={() => {
               navigate(`/home`);
