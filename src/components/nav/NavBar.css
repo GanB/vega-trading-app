@@ -35,3 +35,10 @@ a:hover {
 .link {
   cursor: pointer;
 }
+
+.logo__image {
+  object-fit: contain;
+  height: 80px;
+  width: 150px;
+  padding: 5%;
+}

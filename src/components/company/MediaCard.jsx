@@ -18,6 +18,8 @@ export default function MediaCard({ data }) {
         borderRadius: "15px",
         marginTop: "0.5rem",
         borderWidth: "0.10rem",
+        background: "#dbe9ee",
+        width: 500,
       }}
     >
       <CardMedia

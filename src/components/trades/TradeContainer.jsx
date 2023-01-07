@@ -62,7 +62,7 @@ export const TradeContainer = () => {
 
   return (
     <>
-      <Box sx={{ width: "100%" }}>
+      <Box sx={{ width: "100%", height: "90vh", background: "#f9f9f9" }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs
             value={value}

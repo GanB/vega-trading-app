@@ -90,3 +90,9 @@ fieldset {
   margin-left: 20%;
   margin-top: 1rem;
 }
+
+.app__logo__main {
+  object-fit: contain;
+  height: 350px;
+  width: 500px;
+}

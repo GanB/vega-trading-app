@@ -24,6 +24,7 @@ export const Login = () => {
               id: user.id,
               isRegisteredUser: true,
               fullName: user.fullName,
+              email: user.email,
             })
           );
 
@@ -45,7 +46,14 @@ export const Login = () => {
 
   return (
     <main className="container--login">
-      <h1 className="app__title">Vega Trade</h1>
+      <h1 className="app__title">
+        <img
+          className="app__logo__main"
+          src="images\v-logo-3.png"
+          alt="company logo"
+        ></img>
+      </h1>
+
       <section className="form--login">
         <form onSubmit={handleLogin}>
           <h2>Log On</h2>
