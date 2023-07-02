@@ -1,2 +1,1 @@
-# nss-frontend-capstone-trading-app
-NSS frontend capstone trading app
+A trading app using React and Material UI
