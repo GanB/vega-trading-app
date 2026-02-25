@@ -188,9 +188,11 @@ class MomentumStrategy(BaseStrategy):
             "bottom_pct": self.bottom_pct,
         }
 
+    ALLOWED_PARAMS = {"symbols", "lookback", "skip", "rebalance_freq", "top_pct", "bottom_pct"}
+
     def set_parameters(self, params: dict) -> None:
         for key, value in params.items():
-            if hasattr(self, key):
+            if key in self.ALLOWED_PARAMS:
                 setattr(self, key, value)
         if "symbols" in params:
             self._price_history = {s: [] for s in self.symbols}

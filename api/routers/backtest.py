@@ -20,8 +20,8 @@ async def run_backtest(request: BacktestRequest):
     """Run a backtest with the specified strategy and parameters."""
     try:
         strategy = get_strategy_instance(request.strategy, request.params)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid strategy name or parameters")
 
     # Select data provider
     if request.data_provider == "yahoo":

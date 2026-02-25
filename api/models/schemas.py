@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field, field_validator
 
 
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+_SYMBOL_RE = re.compile(r"^[A-Za-z0-9_.@-]{1,20}$")
 
 
 class BacktestRequest(BaseModel):
@@ -22,6 +23,14 @@ class BacktestRequest(BaseModel):
     def validate_date_format(cls, v: str) -> str:
         if not _DATE_RE.match(v):
             raise ValueError("Date must be in YYYY-MM-DD format")
+        return v
+
+    @field_validator("symbols")
+    @classmethod
+    def validate_symbols(cls, v: List[str]) -> List[str]:
+        for sym in v:
+            if not _SYMBOL_RE.match(sym):
+                raise ValueError(f"Invalid symbol format: {sym}")
         return v
 
 
@@ -71,7 +80,7 @@ class LiveStartRequest(BaseModel):
     strategy: str = Field(..., max_length=50)
     symbols: List[str] = Field(..., min_length=1, max_length=20)
     params: Dict[str, Any] = Field(default_factory=dict)
-    tick_interval: float = Field(default=1.0, gt=0, le=60, description="Seconds between ticks")
+    tick_interval: float = Field(default=1.0, ge=0.5, le=60, description="Seconds between ticks")
     data_provider: str = Field(default="synthetic", max_length=20)
 
 

@@ -181,9 +181,11 @@ class PairsTradingStrategy(BaseStrategy):
             "stop_z": self.stop_z,
         }
 
+    ALLOWED_PARAMS = {"symbol_a", "symbol_b", "lookback", "entry_z", "exit_z", "stop_z"}
+
     def set_parameters(self, params: dict) -> None:
         for key, value in params.items():
-            if hasattr(self, key):
+            if key in self.ALLOWED_PARAMS:
                 setattr(self, key, value)
 
     def reset(self) -> None:

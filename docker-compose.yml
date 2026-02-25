@@ -36,7 +36,7 @@ services:
     env_file:
       - .env
     environment:
-      - JUPYTER_TOKEN=${JUPYTER_TOKEN:-change_this_in_production}
+      - JUPYTER_TOKEN=${JUPYTER_TOKEN:?Set JUPYTER_TOKEN in .env}
     volumes:
       - ./notebooks:/app/notebooks
       - ./engine:/app/engine

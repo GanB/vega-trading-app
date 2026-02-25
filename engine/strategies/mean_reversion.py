@@ -162,9 +162,11 @@ class MeanReversionStrategy(BaseStrategy):
             "rsi_overbought": self.rsi_overbought,
         }
 
+    ALLOWED_PARAMS = {"symbol", "bb_period", "bb_std", "rsi_period", "rsi_oversold", "rsi_overbought"}
+
     def set_parameters(self, params: dict) -> None:
         for key, value in params.items():
-            if hasattr(self, key):
+            if key in self.ALLOWED_PARAMS:
                 setattr(self, key, value)
 
     def reset(self) -> None:
