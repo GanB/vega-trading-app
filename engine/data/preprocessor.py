@@ -14,7 +14,9 @@ def normalize_prices(df: pd.DataFrame, method: str = "returns") -> pd.DataFrame:
     if method == "returns":
         return np.log(df / df.shift(1)).dropna()
     elif method == "zscore":
-        return (df - df.mean()) / df.std()
+        std = df.std()
+        std = std.replace(0, np.nan)
+        return (df - df.mean()) / std
     else:
         raise ValueError(f"Unknown method: {method}")
 
@@ -30,6 +32,7 @@ def rolling_zscore(series: pd.Series, window: int = 60) -> pd.Series:
     """Compute rolling z-score of a series."""
     mean = series.rolling(window=window).mean()
     std = series.rolling(window=window).std()
+    std = std.replace(0, np.nan)
     return (series - mean) / std
 
 
@@ -47,20 +50,15 @@ def compute_bollinger_bands(
 
 
 def compute_rsi(series: pd.Series, period: int = 14) -> pd.Series:
-    """Compute Relative Strength Index."""
+    """Compute Relative Strength Index using Wilder's smoothing."""
     delta = series.diff()
     gain = delta.where(delta > 0, 0.0)
     loss = (-delta).where(delta < 0, 0.0)
 
-    avg_gain = gain.rolling(window=period, min_periods=period).mean()
-    avg_loss = loss.rolling(window=period, min_periods=period).mean()
+    avg_gain = gain.ewm(alpha=1.0 / period, min_periods=period, adjust=False).mean()
+    avg_loss = loss.ewm(alpha=1.0 / period, min_periods=period, adjust=False).mean()
 
-    # Subsequent values use exponential smoothing
-    for i in range(period, len(series)):
-        avg_gain.iloc[i] = (avg_gain.iloc[i - 1] * (period - 1) + gain.iloc[i]) / period
-        avg_loss.iloc[i] = (avg_loss.iloc[i - 1] * (period - 1) + loss.iloc[i]) / period
-
-    rs = avg_gain / avg_loss
+    rs = avg_gain / avg_loss.replace(0, np.nan)
     rsi = 100 - (100 / (1 + rs))
     return rsi
 

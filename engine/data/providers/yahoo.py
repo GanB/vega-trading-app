@@ -22,14 +22,8 @@ class YahooDataProvider(BaseDataProvider):
             ticker = yf.Ticker(symbols[0])
             df = ticker.history(start=start_date, end=end_date, interval=interval)
             df = df[["Open", "High", "Low", "Close", "Volume"]]
-            df.columns = pd.MultiIndex.from_product(
-                [["Open", "High", "Low", "Close", "Volume"], symbols]
-            )
-            # Fix: build proper MultiIndex column-by-column
-            arrays = []
-            for col in ["Open", "High", "Low", "Close", "Volume"]:
-                arrays.append((col, symbols[0]))
-            df.columns = pd.MultiIndex.from_tuples(arrays)
+            tuples = [(col, symbols[0]) for col in df.columns]
+            df.columns = pd.MultiIndex.from_tuples(tuples)
             return df
 
         data = yf.download(

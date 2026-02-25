@@ -36,8 +36,8 @@ export default function LiveTrading() {
       await stopLiveTrading();
       disconnect();
       setRunning(false);
-    } catch {
-      // ignore
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to stop');
     }
   };
 

@@ -2,6 +2,7 @@
 
 import numpy as np
 import pandas as pd
+from scipy import stats
 from typing import Dict, Optional
 
 
@@ -42,7 +43,6 @@ class PortfolioRiskManager:
         if method == "historical":
             var = -np.percentile(returns.dropna(), (1 - confidence) * 100)
         elif method == "parametric":
-            from scipy import stats
             z = stats.norm.ppf(1 - confidence)
             var = -(returns.mean() + z * returns.std())
         else:

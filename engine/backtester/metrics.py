@@ -9,7 +9,7 @@ def compute_sharpe_ratio(
 ) -> float:
     """Annualized Sharpe ratio."""
     returns = equity_series.pct_change().dropna()
-    if returns.std() == 0 or len(returns) < 2:
+    if len(returns) < 2 or np.isclose(returns.std(), 0):
         return 0.0
     excess_returns = returns - risk_free_rate / periods
     return float(np.sqrt(periods) * excess_returns.mean() / returns.std())
@@ -22,7 +22,7 @@ def compute_sortino_ratio(
     returns = equity_series.pct_change().dropna()
     excess_returns = returns - risk_free_rate / periods
     downside = returns[returns < 0]
-    if len(downside) < 2 or downside.std() == 0:
+    if len(downside) < 2 or np.isclose(downside.std(), 0):
         return 0.0
     return float(np.sqrt(periods) * excess_returns.mean() / downside.std())
 

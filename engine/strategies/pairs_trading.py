@@ -52,7 +52,7 @@ class PairsTradingStrategy(BaseStrategy):
         price_b = data["Close"][self.symbol_b]
 
         # Cointegration test
-        score, pvalue, _ = coint(price_a.dropna(), price_b.dropna())
+        _, _, _ = coint(price_a.dropna(), price_b.dropna())
 
         # OLS hedge ratio: regress A on B
         hedge_ratio = self._compute_hedge_ratio(price_a, price_b)
@@ -133,8 +133,6 @@ class PairsTradingStrategy(BaseStrategy):
         if np.isnan(z):
             return None
 
-        prev_position = self._position
-
         if self._position == Signal.FLAT:
             if z > self.entry_z:
                 self._position = Signal.SHORT
@@ -203,5 +201,8 @@ class PairsTradingStrategy(BaseStrategy):
         a = clean_a.iloc[-min_len:].values
         b = clean_b.iloc[-min_len:].values
         # Simple OLS: beta = cov(a,b) / var(b)
-        beta = np.cov(a, b)[0, 1] / np.var(b)
+        var_b = np.var(b)
+        if var_b == 0:
+            return 1.0
+        beta = np.cov(a, b)[0, 1] / var_b
         return float(beta)

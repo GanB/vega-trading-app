@@ -1,5 +1,7 @@
 """Strategy listing and info endpoints."""
 
+from typing import Optional
+
 from fastapi import APIRouter
 
 from api.models.schemas import StrategyInfo
@@ -25,7 +27,7 @@ STRATEGY_REGISTRY = {
 }
 
 
-def get_strategy_instance(name: str, params: dict = None):
+def get_strategy_instance(name: str, params: Optional[dict] = None):
     """Factory function to create a strategy instance."""
     if name not in STRATEGY_REGISTRY:
         raise ValueError(f"Unknown strategy: {name}")

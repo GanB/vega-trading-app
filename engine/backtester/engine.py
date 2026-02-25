@@ -1,6 +1,6 @@
 """Event-driven backtesting engine."""
 
-from typing import Dict, List, Optional, Type
+from typing import Dict, List, Optional
 
 import pandas as pd
 

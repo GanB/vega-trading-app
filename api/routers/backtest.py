@@ -1,5 +1,7 @@
 """Backtest execution endpoints."""
 
+import logging
+
 from fastapi import APIRouter, HTTPException
 
 from api.models.schemas import BacktestRequest, BacktestResult
@@ -7,6 +9,8 @@ from api.routers.strategies import get_strategy_instance
 from engine.backtester.engine import BacktestEngine
 from engine.data.providers.yahoo import YahooDataProvider
 from engine.data.providers.synthetic import SyntheticDataProvider
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/backtest", tags=["backtest"])
 
@@ -33,9 +37,10 @@ async def run_backtest(request: BacktestRequest):
             end_date=request.end_date,
         )
     except Exception as e:
+        logger.exception("Failed to fetch data")
         raise HTTPException(
             status_code=500,
-            detail=f"Failed to fetch data: {str(e)}",
+            detail="Failed to fetch market data. Please check symbols and date range.",
         )
 
     if data.empty:
@@ -50,9 +55,10 @@ async def run_backtest(request: BacktestRequest):
     try:
         result = engine.run(data)
     except Exception as e:
+        logger.exception("Backtest failed")
         raise HTTPException(
             status_code=500,
-            detail=f"Backtest failed: {str(e)}",
+            detail="Backtest execution failed. Please check parameters.",
         )
 
     return result

@@ -1,7 +1,6 @@
 """Live/paper trading endpoints and WebSocket feed."""
 
 import asyncio
-import json
 
 from fastapi import APIRouter, HTTPException, WebSocket, WebSocketDisconnect
 

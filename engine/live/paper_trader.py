@@ -1,8 +1,11 @@
 """Paper trading engine — simulates live trading without real orders."""
 
 import asyncio
+import logging
 from datetime import datetime
 from typing import Callable, Dict, List, Optional
+
+logger = logging.getLogger(__name__)
 
 from engine.backtester.portfolio import Portfolio
 from engine.backtester.execution import ExecutionSimulator
@@ -153,5 +156,5 @@ class PaperTrader:
                 break
             except Exception as e:
                 # Log but don't crash the loop
-                print(f"PaperTrader error: {e}")
+                logger.error("PaperTrader error: %s", e)
                 await asyncio.sleep(self.tick_interval)
