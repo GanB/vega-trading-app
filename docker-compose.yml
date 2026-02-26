@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+    volumes:
+      - ./engine:/app/engine
+      - ./api:/app/api
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  jupyter:
+    build:
+      context: .
+      dockerfile: notebooks/Dockerfile
+    ports:
+      - "8888:8888"
+    env_file:
+      - .env
+    environment:
+      - JUPYTER_TOKEN=${JUPYTER_TOKEN:?Set JUPYTER_TOKEN in .env}
+    volumes:
+      - ./notebooks:/app/notebooks
+      - ./engine:/app/engine
+    profiles:
+      - dev
+    restart: unless-stopped
